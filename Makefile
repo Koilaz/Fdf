@@ -3,26 +3,36 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: leo <leo@student.42.fr>                    +#+  +:+       +#+         #
+#    By: lmarck <lmarck@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/18 17:27:49 by lmarck            #+#    #+#              #
-#    Updated: 2025/01/23 15:48:04 by leo              ###   ########.fr        #
+#    Updated: 2025/01/28 14:32:42 by lmarck           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME    = fdf
 
 CC             = cc
-CFLAGS         = -Wall -Wextra -Werror
+CFLAGS  = -Wall -Wextra -Werror \
+          -I. \
+          -I$(LIBFT_DIR) \
+          -I$(FT_PRINTF_DIR) \
+          -I$(GNL_DIR) \
+          -I$(MINILIBX_DIR)
 
-SRC    = fdf.c
+SRC    = \
+ fdf.c\
+ fdf_parsing.c\
+
 
 OBJ     = $(SRC:.c=.o)
 
 LIBFT_DIR      = ./libft
 FT_PRINTF_DIR  = ./ft_printf
 GNL_DIR        = ./GNL
+MINILIBX_DIR   = ./minilibx
 
+MINILIBX       = $(MINILIBX_DIR)/libmlx.a
 LIBFT          = $(LIBFT_DIR)/libft.a
 FT_PRINTF      = $(FT_PRINTF_DIR)/libftprintf.a
 GNL            = $(GNL_DIR)/gnl.a
@@ -30,18 +40,14 @@ GNL            = $(GNL_DIR)/gnl.a
 all: $(NAME)
 
 $(NAME): $(OBJ)
+	@make -C $(MINILIBX_DIR)
 	@make -C $(LIBFT_DIR)
 	@make -C $(FT_PRINTF_DIR)
 	@make -C $(GNL_DIR)
-	$(CC) $(CFLAGS) $(OBJ) $(GNL) $(LIBFT) $(FT_PRINTF) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(GNL) $(LIBFT) $(FT_PRINTF) $(MINILIBX) \
+		-lX11 -lXext -lm \
+		-o $(NAME)
 	@echo "✓ Compilé avec succès."
-
-
-$(NAME_SERVER): $(OBJ_SERVER)
-	@make -C $(LIBFT_DIR)
-	@make -C $(FT_PRINTF_DIR)
-	$(CC) $(CFLAGS) $(OBJ_SERVER) $(LIBFT) $(FT_PRINTF) -o $(NAME_SERVER)
-	@echo "✓ Server compilé avec succès."
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

@@ -6,6 +6,14 @@
 #  define BUFFER_SIZE 10
 # endif
 
+typedef struct	s_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_data;
+
 # include <unistd.h>
 # include <stddef.h>
 # include "stdio.h"
@@ -15,11 +23,13 @@
 # include "ft_printf.h"
 # include "get_next_line.h"
 # include "libft.h"
+# include "mlx.h"
 
 int **get_map(char *file);
 int map_size(char *file);
 int x_range (char **line);
-void free_map(int **map);
-int **fill_line(int y, int fd, int **map);
+void free_map(int **map, int y);
+int **fill_line(int y, int fd, int **map, int x);
+int	count_x(const char *s, const char c);
 
 #endif
