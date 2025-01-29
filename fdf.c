@@ -22,39 +22,74 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
  int	main(int argc, char **argv)
 {
-	int	**map;
+	int		**map;
 	void	*mlx;
 	void	*mlx_win;
 	t_data	img;
-	int y;
-	int x = 0;
 
 	if (argc != 2)
 		return (0);
 	map = get_map(argv[1]); //ordre des lignes est inverse  y max[0][0] xmax [0][1]
 	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 1920, 1080 * 4, "Window 1");
-	img.img = mlx_new_image(mlx, map[0][1] * 4, map[0][0] * 4);
+	mlx_win = my_new_window(mlx);
+	img.img = mlx_new_image(mlx, 1920, 1080);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	y = map[0][0];
+	top_view(map, mlx_win, img, mlx);
+	mlx_loop(mlx);
+	while(1)
+		pause();
+	return (free_map(map, map[0][0]), free(map), 0);
+}
+void *my_new_window(void *mlx)
+{
+	int win_width;
+	int win_height;
+	void *mlx_win;
 
+	win_width = 1920;
+	win_height = 1080;
+	mlx_win = mlx_new_window(mlx, win_width, win_height, "Fil de fer");
+	return(mlx_win);
+}
+void top_view(int **map, void *mlx_win, t_data img, void *mlx)
+{
+	int scale;
+	int y;
+	int x;
+	int draw_x;
+	int draw_y;
+
+	scale = map_scale(map);
+	x = 0;
+	y = map[0][0];
 	while (y)
 	{
 		while(x < map[0][1])
 		{
 			if(map[y][x])
-			my_mlx_pixel_put(&img, x * 2, y * 2, 16777215);
+			{
+				draw_x = ((1920 - (int)(1920 * scale)) / 2) + (int)(x * scale);
+				draw_y = ((1080 - (int)(1080* scale)) / 2) + (int)(y * scale);
+				my_mlx_pixel_put(&img, draw_x, draw_y, 16777215);
+			}
 			x++;
 		}
 		x = 0;
 		y--;
 	}
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
-	mlx_loop(mlx);
-	while(1)
-		pause();
+}
+float map_scale(int **map)
+{
+	float	scale_x;
+	float	scale_y;
 
-	return (free_map(map, map[0][0]), free(map), 0);
+	scale_x = (float)1920 * 3 / 4 / (float)map[0][0];
+	scale_y = (float)1080 * 3 / 4 / (float)map[0][1];
+	if(scale_x < scale_y)
+		return (scale_x);
+	else
+		return(scale_y);
 }
 
 void	free_map(int **map, int y)
