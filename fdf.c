@@ -12,7 +12,6 @@
 
 #include "fdf.h"
 
-//parsing incluant les couleurs
 //projections isometrique
 // algo DDA placer les lignes
 // gerer les Hook
@@ -27,7 +26,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
  int	main(int argc, char **argv)
 {
-	int		**map;
+	t_pix		**map;
 	void	*mlx;
 	void	*mlx_win;
 	t_data	img;
@@ -43,7 +42,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	mlx_loop(mlx);
 	while(1)
 		pause();
-	return (free_map(map, map[0][0]), free(map), 0);
+	return (free_map(map, (map[0][0]).z), free(map), 0);
 }
 void *my_new_window(void *mlx)
 {
@@ -56,10 +55,9 @@ void *my_new_window(void *mlx)
 	mlx_win = mlx_new_window(mlx, win_width, win_height, "Fil de fer");
 	return(mlx_win);
 }
-void top_view(int **map, void *mlx_win, t_data img, void *mlx)
+void top_view(t_pix **map, void *mlx_win, t_data img, void *mlx)
 {
 	int scale;
-	int z_range;
 	int y;
 	int x;
 	int draw_x;
@@ -68,17 +66,13 @@ void top_view(int **map, void *mlx_win, t_data img, void *mlx)
 	scale = map_scale(map);
 	x = 0;
 	y = 1;
-	z_range = height_range(map);
-	while (y <= map[0][0])
+	while (y <= (map[0][0]).z)
 	{
-		while(x < map[0][1])
+		while(x < (map[0][1]).z)
 		{
-			if(map[y][x])
-			{
-				draw_x = ((1920 - (int)(map[0][1] * scale)) / 2) + (int)(x * scale);
-				draw_y = ((1080 - (int)(map[0][0] * scale)) / 2) + (int)(y * scale);
-				my_mlx_pixel_put(&img, draw_x, draw_y, 16777215);
-			}
+			draw_x = ((1920 - (int)((map[0][1]).z * scale)) / 2) + (int)(x * scale);
+			draw_y = ((1080 - (int)((map[0][0]).z * scale)) / 2) + (int)(y * scale);
+			my_mlx_pixel_put(&img, draw_x, draw_y, map[y][x].color);
 			x++;
 		}
 		x = 0;
@@ -86,24 +80,21 @@ void top_view(int **map, void *mlx_win, t_data img, void *mlx)
 	}
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
 }
-int height_color (int z)
-{
 
-}
-float map_scale(int **map)
+float map_scale(t_pix **map)
 {
 	float	scale_x;
 	float	scale_y;
 
-	scale_x = ((float)1920 / 2) / (float)map[0][0];
-	scale_y = ((float)1080 / 2) / (float)map[0][1];
+	scale_x = ((float)1920 / 2) / (float)(map[0][0]).z;
+	scale_y = ((float)1080 / 2) / (float)(map[0][1]).z;
 	if(scale_x < scale_y)
 		return (scale_x);
 	else
 		return(scale_y);
 }
 
-void	free_map(int **map, int y)
+void	free_map(t_pix **map, int y)
 {
 
 	while (y >= 0)

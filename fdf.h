@@ -39,11 +39,14 @@ int x_range (char **line);
 void free_map(t_pix **map, int y);
 t_pix **fill_line(int y, int fd, t_pix **map, int x);
 int	count_x(const char *s, const char c);
-t_pix **rev_map_line( int **map);
+t_pix **rev_map_line(t_pix **map);
 
 void *my_new_window(void *mlx);
 void top_view(t_pix **map, void *mlx_win, t_data img, void *mlx);
 float map_scale(t_pix **map);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+t_pix get_pix(char *point);
+int ft_htoi(char *str);
+int color_altitude(int z);
 
 #endif
