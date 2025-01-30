@@ -14,6 +14,12 @@ typedef struct	s_data {
 	int		endian;
 }				t_data;
 
+typedef	struct	s_pix {
+	int	z;
+	int	color;
+}				t_pix;
+
+
 # include <unistd.h>
 # include <stddef.h>
 # include "stdio.h"
@@ -27,16 +33,17 @@ typedef struct	s_data {
 
 //Parsing
 
-int **get_map(char *file);
+t_pix **get_map(char *file);
 int map_size(char *file);
 int x_range (char **line);
-void free_map(int **map, int y);
-int **fill_line(int y, int fd, int **map, int x);
+void free_map(t_pix **map, int y);
+t_pix **fill_line(int y, int fd, t_pix **map, int x);
 int	count_x(const char *s, const char c);
+t_pix **rev_map_line( int **map);
 
 void *my_new_window(void *mlx);
-void top_view(int **map, void *mlx_win, t_data img, void *mlx);
-float map_scale(int **map);
+void top_view(t_pix **map, void *mlx_win, t_data img, void *mlx);
+float map_scale(t_pix **map);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 #endif

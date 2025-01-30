@@ -6,7 +6,7 @@
 /*   By: lmarck <lmarck@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:00:53 by lmarck            #+#    #+#             */
-/*   Updated: 2025/01/27 20:24:02 by lmarck           ###   ########.fr       */
+/*   Updated: 2025/01/30 16:46:04 by lmarck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,14 @@ int	count_x(const char *s, const char c)
 	return (n);
 }
 
-int	**get_map(char *file)
+t_pix	**get_map(char *file)
 {
 	int	fd;
 	int	y;
 	int	**map;
 
 	y = map_size(file);
-	map = malloc((y + 1) * sizeof(int *));
+	map = malloc((y + 1) * sizeof(t_pix *));
 	if (!map)
 		return (0);
 	fd = open(file, O_RDONLY);
@@ -83,11 +83,31 @@ int	**get_map(char *file)
 		map = fill_line(y, fd, map, 0);
 		y--;
 	}
+	map = rev_map_line(map);
 	close(fd);
 	return (map);
 }
+t_pix **rev_map_line(t_pix **map)
+{
+	int i;
+	int y;
+	int *line;
 
-int	**fill_line(int y, int fd, int **map, int x)
+	i = 1;
+	y = (map[0][0]).z;
+	while(i < y)
+	{
+		line = map[i];
+		map[i] = map[y];
+		map[y] = line;
+		y--;
+		i++;
+	}
+	return(map);
+}
+
+
+t_pix	**fill_line(int y, int fd, t_pix **map, int x)
 {
 	static int	range;
 	char		*line;
@@ -104,7 +124,7 @@ int	**fill_line(int y, int fd, int **map, int x)
 			return (free(splited_line), free(line), NULL);
 		while (splited_line[x])
 		{
-			map[y][x] = ft_atoi(splited_line[x]);
+			map[y][x] = get_pix(splited_line[x]);
 			free(splited_line[x]);
 			x++;
 		}
@@ -112,8 +132,43 @@ int	**fill_line(int y, int fd, int **map, int x)
 		free(splited_line);
 	}
 	else if (y == 0)
-		map[0][1] = range;
+		(map[0][1]).z = range;
 	return (map);
+}
+
+t_pix get_pix(char *point)
+{
+	t_pix pixel;
+	char **split;
+
+	split = ft_split(point, ',');
+	pixel.z = ft_atoi(split[0]);
+	if (split[1])
+		pixel.color = ft_htoi(split[1]);
+	else
+		pixel.color = color_altitude(pixel.z);
+	return (pixel);
+}
+int ft_htoi(char *str)
+{
+	int nt;
+	int n ;
+	int i;
+
+	if(ft_strlen(str) != 8)
+		return (0);
+	nt = 0;
+	i = 2;
+	while(i < 8)
+	{
+		if(str[i] >= '0' && str[i] <= '9');
+			n = str[i] - '0';
+		if (str[i] >= 'A' && str[i] <= 'F');
+			n = str[i] - 'A' + 10;
+		nt = n + nt;
+		nt = 10 * nt;
+	}
+	return (nt);
 }
 
 int	x_range(char **line)

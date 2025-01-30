@@ -12,6 +12,11 @@
 
 #include "fdf.h"
 
+//parsing incluant les couleurs
+//projections isometrique
+// algo DDA placer les lignes
+// gerer les Hook
+
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
@@ -54,6 +59,7 @@ void *my_new_window(void *mlx)
 void top_view(int **map, void *mlx_win, t_data img, void *mlx)
 {
 	int scale;
+	int z_range;
 	int y;
 	int x;
 	int draw_x;
@@ -61,31 +67,36 @@ void top_view(int **map, void *mlx_win, t_data img, void *mlx)
 
 	scale = map_scale(map);
 	x = 0;
-	y = map[0][0];
-	while (y)
+	y = 1;
+	z_range = height_range(map);
+	while (y <= map[0][0])
 	{
 		while(x < map[0][1])
 		{
 			if(map[y][x])
 			{
-				draw_x = ((1920 - (int)(1920 * scale)) / 2) + (int)(x * scale);
-				draw_y = ((1080 - (int)(1080* scale)) / 2) + (int)(y * scale);
+				draw_x = ((1920 - (int)(map[0][1] * scale)) / 2) + (int)(x * scale);
+				draw_y = ((1080 - (int)(map[0][0] * scale)) / 2) + (int)(y * scale);
 				my_mlx_pixel_put(&img, draw_x, draw_y, 16777215);
 			}
 			x++;
 		}
 		x = 0;
-		y--;
+		y++;
 	}
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
+}
+int height_color (int z)
+{
+
 }
 float map_scale(int **map)
 {
 	float	scale_x;
 	float	scale_y;
 
-	scale_x = (float)1920 * 3 / 4 / (float)map[0][0];
-	scale_y = (float)1080 * 3 / 4 / (float)map[0][1];
+	scale_x = ((float)1920 / 2) / (float)map[0][0];
+	scale_y = ((float)1080 / 2) / (float)map[0][1];
 	if(scale_x < scale_y)
 		return (scale_x);
 	else
@@ -109,13 +120,13 @@ void	free_map(int **map, int y)
 	if (argc != 2)
 		return (0);
 	map = get_map(argv[1]);
-	int y = map[0][0];
+	int y = 1;
 	int x = 0;
 	printf("y = %d \n", map[0][0]);
 	printf("x = %d \n", map[0][1]);
-	while (y > 0)
+	while (y <= map[0][0])
 	{
-        while(x < map [0][1])
+        while(x <= map [0][1])
         {
 		printf("%d ", map[y][x]);
         x++;
