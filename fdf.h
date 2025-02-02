@@ -19,6 +19,22 @@ typedef	struct	s_pix {
 	int	color;
 }				t_pix;
 
+typedef	struct	s_tri_d {
+	int	x;
+	int	y;
+	int	z;
+	int	color;
+}				t_tri_d;
+
+typedef	struct	s_bi_d {
+	float	xp;
+	float	yp;
+	int	x;
+	int	y;
+	int	z;
+	int	color;
+}				t_bi_d;
+
 
 # include <unistd.h>
 # include <stddef.h>
@@ -48,5 +64,13 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 t_pix get_pix(char *point);
 int ft_htoi(char *str);
 int color_altitude(int z);
-
+void put_iso_point(t_bi_d *map, void *mlx_win, t_data img, void *mlx);
+t_bi_d *map_iso(t_tri_d *mapt, float rx, float ry);
+t_tri_d *table_to_struct(t_pix **map);
+t_tri_d put_dimension(int x_range, int y_range);
+void exit_fdf(t_pix **map);
+float m_scale(int y, int x);
+int	ft_abs(int i);
+t_bi_d *apply_rotation(t_bi_d *map, float rx, float ry);
+t_bi_d rota(t_bi_d p, float ry, float rx, float z_scale);
 #endif

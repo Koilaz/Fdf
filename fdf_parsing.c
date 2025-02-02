@@ -6,7 +6,7 @@
 /*   By: lmarck <lmarck@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 20:00:53 by lmarck            #+#    #+#             */
-/*   Updated: 2025/01/30 21:10:58 by lmarck           ###   ########.fr       */
+/*   Updated: 2025/01/31 18:40:12 by lmarck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	map_size(char *file)
 	line = "not NULL";
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		return (write(2, "open_1 failed\n", 14), 0);
+		return (write(2, "open_1 failed\n", 14), exit(0), 0);
 	while (line)
 	{
 		line = get_next_line(fd, 0);
@@ -73,7 +73,7 @@ t_pix	**get_map(char *file)
 		return (0);
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		return (write(2, "open2_failed\n", 14), NULL);
+		exit_fdf(map);
 	map[0] = malloc(2 * sizeof(t_pix));
 	if (!map[0])
 		return (NULL);
@@ -86,6 +86,13 @@ t_pix	**get_map(char *file)
 	map = rev_map_line(map);
 	close(fd);
 	return (map);
+}
+void exit_fdf(t_pix **map)
+{
+	free_map(map, (map[0][0]).z);
+	free(map);
+	write(2, "open2failed", 12);
+	exit(0);
 }
 t_pix **rev_map_line(t_pix **map)
 {

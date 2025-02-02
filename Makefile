@@ -6,14 +6,14 @@
 #    By: lmarck <lmarck@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/18 17:27:49 by lmarck            #+#    #+#              #
-#    Updated: 2025/01/28 14:32:42 by lmarck           ###   ########.fr        #
+#    Updated: 2025/01/31 19:57:44 by lmarck           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME    = fdf
 
 CC             = cc
-CFLAGS  = -Wall -Wextra -Werror \
+CFLAGS  = -Wall -Wextra -Werror -g3\
           -I. \
           -I$(LIBFT_DIR) \
           -I$(FT_PRINTF_DIR) \
