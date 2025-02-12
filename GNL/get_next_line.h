@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leo <leo@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: lmarck <lmarck@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 20:17:42 by lmarck            #+#    #+#             */
-/*   Updated: 2025/01/23 15:27:29 by leo              ###   ########.fr       */
+/*   Updated: 2025/02/10 16:43:30 by lmarck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 
 void	*ft_memset( void *pointer, int value, size_t count);
 void	*ft_calloc(size_t nmemb, size_t size);
-char	*get_next_line(int fd, int reset);
+char	*get_next_line(int fd);
 size_t	ft_strlen(const char *str);
 char	*new_read(char *buf, int fd, int nb_read, char *tmp);
 char	*ft_join(char *buf, char *str);

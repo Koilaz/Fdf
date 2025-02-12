@@ -6,7 +6,7 @@
 #    By: lmarck <lmarck@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/18 17:27:49 by lmarck            #+#    #+#              #
-#    Updated: 2025/01/31 19:57:44 by lmarck           ###   ########.fr        #
+#    Updated: 2025/02/10 21:11:35 by lmarck           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,13 @@ CFLAGS  = -Wall -Wextra -Werror -g3\
 SRC    = \
  fdf.c\
  fdf_parsing.c\
-
+ display_img.c\
+ map_init.c\
+ fdf_hook.c\
+ fdf_utils.c\
+ fdf_utils2.c\
+ my_mlx.c\
+ color.c\
 
 OBJ     = $(SRC:.c=.o)
 

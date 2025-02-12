@@ -3,26 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: leo <leo@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: lmarck <lmarck@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 11:41:17 by lmarck            #+#    #+#             */
-/*   Updated: 2025/01/23 21:29:56 by leo              ###   ########.fr       */
+/*   Updated: 2025/02/10 16:42:39 by lmarck           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*get_next_line(int fd,int reset)
+char	*get_next_line(int fd)
 {
 	static char	buf[BUFFER_SIZE + 1];
 	char		*str;
 	char		*tmp;
 
-	if(reset)
-	{
-		ft_memset(buf, 0, BUFFER_SIZE + 1);
-		return ("");
-	}
 	tmp = NULL;
 	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
